@@ -106,13 +106,13 @@ pnpm lint
 
 <br>
 
-1. [antfu VS Code support](https://github.com/antfu/eslint-config?tab=readme-ov-file#ide-support-auto-fix-on-save)
+5. [antfu VS Code support](https://github.com/antfu/eslint-config?tab=readme-ov-file#ide-support-auto-fix-on-save)
 
 Install VS Code [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
 Add the following settings to your `.vscode/settings.json`:
 
-```js
+```json
 {
   // Disable the default formatter, use eslint instead
   "prettier.enable": false,
@@ -180,14 +180,16 @@ pnpm lint:fix
 - add lint-staged to `package.json`:
 
 ```json
-"lint-staged": {
-  "*": "pnpm lint",
+{
+  "lint-staged": {
+    "*": "pnpm lint"
+  }
 }
 ```
 
 <br>
 
-1. [husky](https://github.com/typicode/husky)
+7. [husky](https://github.com/typicode/husky)
 
 - initialize husky:
 
