@@ -1,56 +1,204 @@
-# React + TypeScript + Vite
+# Vite + React + TypeScript + ESLint + Husky + lint-staged
 
-npm i react-redux reduxjs/toolkit react-router-dom @mui/material @emotion/react @emotion/styled @mui/icons-material
+Here’s a complete Vite + React + TypeScript project setup with ESLint, Husky, and lint-staged — great for enforcing code quality in a modern dev workflow.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<hr>
 
-Currently, two official plugins are available:
+### Warning: this project uses pnpm
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- visit [pnpm.io](https://pnpm.io/) for more information
 
-## Expanding the ESLint configuration
+<hr>
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✅ What You'll Get
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+    ⚡ Vite – fast dev server & build
+
+    ⚛️ React with TypeScript
+
+    📏 ESLint for linting
+
+    🐶 Husky to run hooks
+
+    🧹 lint-staged to only lint changed files
+
+<hr>
+
+## 🛠️ Step-by-Step Setup
+
+1. Create Vite + React + TypeScript App
+
+```bash
+pnpm create vite@latest my-app --template react-ts
+cd my-app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+<br>
+
+2. Install ESLint + Plugins
+
+```bash
+pnpm install -D eslint eslint-plugin-react-hooks eslint-plugin-react-refresh globals husky lint-staged typescript typescript-eslint vite @antfu/eslint-config @eslint-react/eslint-plugin @eslint/js @types/react @types/react-dom @vitejs/plugin-react
+```
+
+<br>
+
+3. Add scripts to `package.json`
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "prepare": "husky"
+  }
+}
+```
+
+<br>
+
+4. [w3cj/eslint.config.mjs](https://gist.github.com/w3cj/21b1f1b4857ecd13d076075a5c5aaf13/)
+
+- rename `eslint.config.js` to `eslint.config.mjs` to make it behave as a module and add the following content:
 
 ```js
-import reactDom from "eslint-plugin-react-dom";
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
+import antfu from "@antfu/eslint-config";
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    "react-x": reactX,
-    "react-dom": reactDom,
+export default antfu({
+  type: "app",
+  react: true,
+  typescript: true,
+  formatters: true,
+  stylistic: {
+    indent: 2,
+    semi: true,
+    quotes: "double",
   },
+}, {
   rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs["recommended-typescript"].rules,
-    ...reactDom.configs.recommended.rules,
+    "ts/no-redeclare": "off",
+    "ts/consistent-type-definitions": ["error", "type"],
+    "no-console": ["warn"],
+    "antfu/no-top-level-await": ["off"],
+    "node/prefer-global/process": ["off"],
+    "node/no-process-env": ["error"],
+    "perfectionist/sort-imports": ["error", {
+      tsconfigRootDir: ".",
+    }],
+    "unicorn/filename-case": ["error", {
+      case: "kebabCase",
+      ignore: ["README.md"],
+    }],
   },
 });
 ```
+
+<br>
+
+- run pnpm lint to check the configuration
+
+```bash
+pnpm lint
+```
+
+<br>
+
+1. [antfu VS Code support](https://github.com/antfu/eslint-config?tab=readme-ov-file#ide-support-auto-fix-on-save)
+
+Install VS Code [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+Add the following settings to your `.vscode/settings.json`:
+
+```js
+{
+  // Disable the default formatter, use eslint instead
+  "prettier.enable": false,
+  "editor.formatOnSave": false,
+
+  // Auto fix
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+
+  // Silent the stylistic rules in you IDE, but still auto fix them
+  "eslint.rules.customizations": [
+    { "rule": "style/*", "severity": "off", "fixable": true },
+    { "rule": "format/*", "severity": "off", "fixable": true },
+    { "rule": "*-indent", "severity": "off", "fixable": true },
+    { "rule": "*-spacing", "severity": "off", "fixable": true },
+    { "rule": "*-spaces", "severity": "off", "fixable": true },
+    { "rule": "*-order", "severity": "off", "fixable": true },
+    { "rule": "*-dangle", "severity": "off", "fixable": true },
+    { "rule": "*-newline", "severity": "off", "fixable": true },
+    { "rule": "*quotes", "severity": "off", "fixable": true },
+    { "rule": "*semi", "severity": "off", "fixable": true }
+  ],
+
+  // Enable eslint for all supported languages
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml",
+    "toml",
+    "xml",
+    "gql",
+    "graphql",
+    "astro",
+    "svelte",
+    "css",
+    "less",
+    "scss",
+    "pcss",
+    "postcss"
+  ]
+}
+```
+
+<br>
+
+- run pnpm lint:fix to fix the configuration
+
+```bash
+pnpm lint:fix
+```
+
+<br>
+
+6. [lint-staged](https://github.com/okonet/lint-staged) configuration:
+
+- add lint-staged to `package.json`:
+
+```json
+"lint-staged": {
+  "*": "pnpm lint",
+}
+```
+
+<br>
+
+1. [husky](https://github.com/typicode/husky)
+
+- initialize husky:
+
+```bash
+pnpm exec husky init
+```
+
+- edit `.husky/pre-commit` and replace 'pnpm test' with 'pnpm exec lint-staged':
+
+```bash
+pnpm exec lint-staged
+```
+
+<br>
