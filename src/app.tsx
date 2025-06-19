@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <div>
-        <h1>Vite + React + Typescript + ESLint + husky + lint-staged + Github Actions</h1>
+        <h1>Vite + React + Typescript + ESLint + husky + lint-staged</h1>
       </div>
       <div className="card">
         <button onClick={() => setCount(count => count + 1)} type="button">
