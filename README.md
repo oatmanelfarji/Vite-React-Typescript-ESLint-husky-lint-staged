@@ -4,9 +4,12 @@ Here’s a complete Vite + React + TypeScript project setup with ESLint, Husky, 
 
 <hr>
 
-### Warning: this project uses pnpm
+> [!NOTE]
+> this project uses [antfu/eslint-config](https://github.com/antfu/eslint-config)
 
-- visit [pnpm.io](https://pnpm.io/) for more information
+> [!WARNING]
+> this project uses [pnpm](https://pnpm.io/)
+> visit [pnpm.io](https://pnpm.io/) for more information
 
 <hr>
 
@@ -35,34 +38,17 @@ cd my-app
 
 <br>
 
-2. Install ESLint + Plugins
+2. Install [antfu/eslint-config](https://github.com/antfu/eslint-config)
 
 ```bash
-pnpm install -D eslint eslint-plugin-react-hooks eslint-plugin-react-refresh globals husky lint-staged typescript typescript-eslint vite @antfu/eslint-config @eslint-react/eslint-plugin @eslint/js @types/react @types/react-dom @vitejs/plugin-react
+pnpm add -D eslint @antfu/eslint-config
 ```
+
+- And create `eslint.config.mjs` in your project root
 
 <br>
 
-3. Add scripts to `package.json`
-
-```json
-{
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "preview": "vite preview",
-    "prepare": "husky"
-  }
-}
-```
-
-<br>
-
-4. [w3cj/eslint.config.mjs](https://gist.github.com/w3cj/21b1f1b4857ecd13d076075a5c5aaf13/)
-
-- rename `eslint.config.js` to `eslint.config.mjs` to make it behave as a module and add the following content:
+3. Add [w3cj/eslint.config.mjs](https://gist.github.com/w3cj/21b1f1b4857ecd13d076075a5c5aaf13/)
 
 ```js
 import antfu from "@antfu/eslint-config";
@@ -98,6 +84,23 @@ export default antfu({
 
 <br>
 
+4. Add scripts to `package.json`
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .", // optionally add --report-unused-disable-directives to check unused rules
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "prepare": "husky"
+  }
+}
+```
+
+<br>
+
 - run pnpm lint to check the configuration
 
 ```bash
@@ -108,9 +111,9 @@ pnpm lint
 
 5. [antfu VS Code support](https://github.com/antfu/eslint-config?tab=readme-ov-file#ide-support-auto-fix-on-save)
 
-Install VS Code [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- Install VS Code [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-Add the following settings to your `.vscode/settings.json`:
+- Add the following settings to your `.vscode/settings.json`:
 
 ```json
 {
@@ -177,6 +180,12 @@ pnpm lint:fix
 
 6. [lint-staged](https://github.com/okonet/lint-staged) configuration:
 
+- install lint-staged:
+
+```bash
+pnpm add -D lint-staged
+```
+
 - add lint-staged to `package.json`:
 
 ```json
@@ -191,16 +200,25 @@ pnpm lint:fix
 
 7. [husky](https://github.com/typicode/husky)
 
+- install husky:
+
+```bash
+pnpm add -D husky
+```
+
 - initialize husky:
 
 ```bash
 pnpm exec husky init
 ```
 
-- edit `.husky/pre-commit` and replace 'pnpm test' with 'pnpm exec lint-staged':
-
-```bash
-pnpm exec lint-staged
-```
+- edit `.husky/pre-commit` and replace '<b>pnpm test</b>' with '<b>pnpm exec lint-staged</b>'
 
 <br>
+
+# 🚀 Done
+
+congratulations! you have successfully set up a Vite + React + TypeScript + ESLint + Husky + lint-staged project.
+
+- run `pnpm dev` to start the development server
+- run `pnpm build` to build the production version
